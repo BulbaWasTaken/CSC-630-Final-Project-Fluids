@@ -1,30 +1,27 @@
-﻿  main.cpp
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(71,17): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(73,16): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(74,16): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(75,17): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(351,58): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(351,52): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(352,59): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(352,54): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(352,48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(356,59): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(356,53): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(356,47): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(357,57): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(357,52): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(357,47): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(358,58): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(358,53): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(358,48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(362,63): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(362,55): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(362,47): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(363,63): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(363,55): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(363,47): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(364,66): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(364,56): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(364,48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\src\main.cpp(365,49): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-  Project3.vcxproj -> C:\Users\karll\OneDrive\Documents\SchoolWork\CSC630\source\repos\Project3\x64\Debug\Project3.exe
+﻿  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\imgui\imgui_impl_glfw.cpp(84,10): fatal  error C1083: Cannot open include file: 'GLFW/glfw3.h': No such file or directory
+  imgui_impl_opengl3.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Camera.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\Camera.cpp(1,10): fatal  error C1083: Cannot open include file: 'Camera.h': No such file or directory
+  GLSL.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\GLSL.cpp(7,10): fatal  error C1083: Cannot open include file: 'GLSL.h': No such file or directory
+  main.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\main.cpp(6,10): fatal  error C1083: Cannot open include file: 'glad/glad.h': No such file or directory
+  MatrixStack.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\MatrixStack.cpp(2,10): fatal  error C1083: Cannot open include file: 'MatrixStack.h': No such file or directory
+  Program.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\Program.cpp(2,10): fatal  error C1083: Cannot open include file: 'Program.h': No such file or directory
+  Shape.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\Shape.cpp(1,10): fatal  error C1083: Cannot open include file: 'Shape.h': No such file or directory
+  Texture.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\Texture.cpp(1,10): fatal  error C1083: Cannot open include file: 'Texture.h': No such file or directory
+  tiny_obj_loader.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\tiny_obj_loader.cpp(15,10): fatal  error C1083: Cannot open include file: 'tiny_obj_loader/tiny_obj_loader.h': No such file or directory
+  WindowManager.cpp
+C:\Users\OrangeCatBears\Documents\CompSci HW\Graphics HW\Final Project\CSC-630-Final-Project-Fluids\Project3\src\WindowManager.cpp(2,10): fatal  error C1083: Cannot open include file: 'WindowManager.h': No such file or directory
+  Generating Code...
