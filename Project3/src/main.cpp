@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <glad/glad.h>
-
+#include <string.h>
 #include "GLSL.h"
 #include "Program.h"
 #include "Shape.h"
@@ -16,7 +16,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-
+#include <CL/cl.h>
 #include <tiny_obj_loader/tiny_obj_loader.h>
 
 // value_ptr for glm
@@ -79,7 +79,26 @@ public:
 	double mouseY;
 
 	GLuint cubeMapSkyBox;
+	char* testOpenCL() {
+		cl_platform_id platform_id = NULL;
+		cl_device_id device_id = NULL;
+		cl_uint ret_num_devices;
+		cl_uint ret_num_platforms;
+		char device_name[1024];
 
+		// Get platform and device information
+		cl_int ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
+		ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &device_id, &ret_num_devices);
+
+		// Get the device name
+		ret = clGetDeviceInfo(device_id, CL_DEVICE_NAME, 1024, device_name, NULL);
+
+		// Print the device name
+		std::cout << "Graphics Card: " << device_name << std::endl;
+	
+		return device_name;
+	
+	}
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -651,7 +670,7 @@ int main(int argc, char *argv[])
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(windowManager->getHandle(), true);
 	ImGui_ImplOpenGL3_Init("#version 330");
-
+	application->testOpenCL();
 	// Loop until the user closes the window.
 	while (! glfwWindowShouldClose(windowManager->getHandle()))
 	{
@@ -662,11 +681,11 @@ int main(int argc, char *argv[])
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
 		// ImGUI window creation
 		ImGui::Begin("My name is window, ImGUI window");
 		// Text that appears in the window
 		ImGui::Text("Hello there adventurer!");
+
 		// Ends the window
 		ImGui::End();
 
