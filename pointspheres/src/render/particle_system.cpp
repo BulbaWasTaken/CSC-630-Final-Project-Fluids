@@ -1,3 +1,4 @@
+
 #include "particle_system.h"
 
 ParticleSystem::ParticleSystem()
@@ -6,18 +7,19 @@ ParticleSystem::ParticleSystem()
     positions = new float[3 * num_of_points];
     velocities = new float[3 * num_of_points];
     densities = new float[num_of_points];
+    hashes = new float[num_of_points];
 
     fillCube();
 
     float vertices[] = {
-           -POINT_RADIUS / 2.0, -POINT_RADIUS / 2.0, 0,
-            POINT_RADIUS / 2.0, -POINT_RADIUS / 2.0, 0,
-            POINT_RADIUS / 2.0,  POINT_RADIUS / 2.0, 0,
+          -POINT_RADIUS / 2.0f, -POINT_RADIUS / 2.0f, 0,
+           POINT_RADIUS / 2.0f, -POINT_RADIUS / 2.0f, 0,
+           POINT_RADIUS / 2.0f,  POINT_RADIUS / 2.0f, 0,
             
-           -POINT_RADIUS / 2.0, -POINT_RADIUS / 2.0, 0,
-            POINT_RADIUS / 2.0,  POINT_RADIUS / 2.0, 0,
-           -POINT_RADIUS / 2.0,  POINT_RADIUS / 2.0, 0
-        };
+          -POINT_RADIUS / 2.0f, -POINT_RADIUS / 2.0f, 0,
+           POINT_RADIUS / 2.0f,  POINT_RADIUS / 2.0f, 0,
+          -POINT_RADIUS / 2.0f,  POINT_RADIUS / 2.0f, 0
+    };
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -48,6 +50,75 @@ ParticleSystem::~ParticleSystem()
     velocities = nullptr;
     delete[] densities;
     densities = nullptr;
+    delete[] hashes;
+    hashes = nullptr;
+}
+
+float ParticleSystem::poly6(float radius, float distance)
+{
+    if (distance < radius)
+    {
+        float smoothing = radius * radius - distance * distance;
+        float scale = 315.0f / (64.0f * PI * std::pow(abs(radius), 9));
+        return scale * smoothing * smoothing * smoothing;
+    }
+    return 0.0f;
+}
+
+float ParticleSystem::spikyGrad(float radius, float distance)
+{
+    if (distance < 0.0001f) return 0.0f;
+    float spiky = (radius - distance) * (radius - distance);
+    return -45.0f / (PI * std::pow(radius, 6)) * spiky;
+}
+
+float ParticleSystem::calculateDensity()
+{
+    return 0.0f;
+}
+
+float ParticleSystem::calculatePressure()
+{
+    return 0.0f;
+}
+
+void ParticleSystem::sort(float* positions)
+{
+
+}
+
+int ParticleSystem::getHash3D(glm::vec3 cell)
+{
+    int hash_x = (int)cell.x * hash_prime1;
+    int hash_y = (int)cell.y * hash_prime2;
+    int hash_z = (int)cell.z * hash_prime3;
+    int hash = hash_x^hash_y^hash_z;
+    return hash % hash_size;
+}
+
+glm::vec3 ParticleSystem::getCell(const float* particles, int index, float radius)
+{
+    int x = particles[index] / radius;
+    int y = particles[index + 1] / radius;
+    int z = particles[index + 2] / radius;
+    return glm::vec3(x, y, z);
+}
+
+void ParticleSystem::initNeighborTable()
+{
+    neighbor_table = (uint32_t*) malloc(sizeof(uint32_t) * hash_size);
+
+    for (int i = 0; i < hash_size; i++)
+    {
+        neighbor_table[i] = INT_MAX;
+    }
+
+    uint32_t blank_hash = INT_MAX;
+    int size = x_length * y_length * z_length;
+    for (int i = 0; i < size; i++)
+    {
+        uint32_t blank_hash = positions[i];
+    }
 }
 
 void ParticleSystem::setPos(int index, float x, float y, float z)
@@ -62,36 +133,6 @@ void ParticleSystem::updateBuffer()
 {
     glBindBuffer(GL_ARRAY_BUFFER, instance_VBO);
     glBufferData(GL_ARRAY_BUFFER, 3 * num_of_points * sizeof(float), positions, GL_STATIC_DRAW);
-}
-
-void ParticleSystem::update(float delta_time)
-{   
-    for (int i = 0; i < num_of_points; i++)
-    {
-        velocities[i * 3] += 0;
-        velocities[i * 3 + 1] += -10.0f * delta_time;
-        velocities[i * 3 + 2] += 0;
-
-        positions[i * 3] += velocities[i * 3] * delta_time;
-        positions[i * 3 + 1] += velocities[i * 3 + 1] * delta_time;
-        positions[i * 3 + 2] += velocities[i * 3 + 2] * delta_time;
-
-        if (positions[i * 3] <= x_bounds)
-        {
-            positions[i * 3] = x_bounds;
-            velocities[i * 3] *= -1.0f;
-        }
-        if (positions[i * 3 + 1] < y_bounds)
-        {
-            positions[i * 3 + 1] = y_bounds;
-            velocities[i * 3 + 1] *= -1.0f * DAMPING;
-        }
-        if (positions[i * 3 + 2] <= z_bounds)
-        {
-            positions[i * 3 + 2] = z_bounds;
-            velocities[i * 3 + 2] *= -1.0f;
-        }
-    }
 }
 
 void ParticleSystem::printPositions() const
@@ -126,6 +167,36 @@ void ParticleSystem::fillCube()
 
                 point_id++;
             }
+        }
+    }
+}
+
+void ParticleSystem::update(float delta_time)
+{   
+    for (int i = 0; i < num_of_points; i++)
+    {
+        velocities[i * 3] += 0;
+        velocities[i * 3 + 1] += -E_GRAVITY * delta_time;
+        velocities[i * 3 + 2] += 0;
+
+        positions[i * 3] += velocities[i * 3] * delta_time;
+        positions[i * 3 + 1] += velocities[i * 3 + 1] * delta_time;
+        positions[i * 3 + 2] += velocities[i * 3 + 2] * delta_time;
+
+        if (positions[i * 3] <= x_bounds)
+        {
+            positions[i * 3] = x_bounds;
+            velocities[i * 3] *= -1.0f;
+        }
+        if (positions[i * 3 + 1] < y_bounds)
+        {
+            positions[i * 3 + 1] = y_bounds;
+            velocities[i * 3 + 1] *= -1.0f * DAMPING;
+        }
+        if (positions[i * 3 + 2] <= z_bounds)
+        {
+            positions[i * 3 + 2] = z_bounds;
+            velocities[i * 3 + 2] *= -1.0f;
         }
     }
 }
