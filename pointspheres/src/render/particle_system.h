@@ -30,15 +30,17 @@ public:
 
     float spikyGrad(float radius, float distance); // get lagrange gradient
 
-    void calculateDensityPressure(int index);
+    void calculateDensityPressure(int start, int end);
 
-    void calculateForce(int index);
+    void calculateForce(int start, int end);
 
-    void updateParticles();
+    void updateParticles(float delta_time, int start, int end);
 
     void sort(); // sorts list
     
     int getHash3D(glm::vec3 cell);
+
+    void getHashes(int start, int end);
 
     glm::vec3 getCell(int index, float radius);
 
@@ -65,27 +67,27 @@ private:
     float POINT_RADIUS = 0.25f;
     unsigned int num_of_points = 0;
 
-    const int x_length = 11;
-    const int y_length = 11;
-    const int z_length = 11;
+    const int x_length = 10;
+    const int y_length = 15;
+    const int z_length = 10;
 
     float spacing = 0.1f;
 
-    const float x_bounds = 2.0f;
-    const float y_bounds = -2.0f;
-    const float z_bounds = 2.0f;
+    const float x_bounds = 1.0f;
+    const float y_bounds = -1.0f;
+    const float z_bounds = 1.0f;
 
-    float DAMPING = 0.7f;
+    float DAMPING = 0.3f;
 
     // Math domain
     const float PI = 3.14159265f;
     const float E_GRAVITY = 9.8f; // gravity force factor
-    const float MASS = 0.06f; // mass of a particle
+    const float MASS = 0.8f; // mass of a particle
     const float KERNEL_RADIUS = 0.2f; // radius of influence
-    const float KERENL_RADIUS_2 = KERNEL_RADIUS * KERNEL_RADIUS;
+    const float KERNEL_RADIUS_2 = KERNEL_RADIUS * KERNEL_RADIUS;
     const float P_PRESSURE = 0.2f; // pressure force factor
     const float REST_DENSITY = 1000.f; // density particles go towards
-    const float VISCOSITY = 1.06f; // particles resistance
+    const float VISCOSITY = 2.0f; // particles resistance
 
     // values for kernel sets
     float poly6_k = 0;
