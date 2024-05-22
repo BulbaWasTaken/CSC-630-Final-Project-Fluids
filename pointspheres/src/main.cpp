@@ -12,6 +12,9 @@
 #include "render/particle_system.h"
 #include "utils/camera.h"
 #include "utils/matrix_stack.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 class Application : public EventCallbacks
 {
@@ -185,6 +188,20 @@ public:
 
         process_Input(getWindow());
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::Begin("CSC 630 Fluid Simulation");
+        ImGui::Text("ImGUI Test:");
+        ImGui::SliderFloat("Number of Particles", particle_system->getNumPoints(), 0.5f, 1000.0f);
+        ImGui::SliderFloat("Density", &density, 0.5f, 100.0f);
+        ImGui::SliderFloat("Pressure Force", &pressureForce, 0.5f, 100.0f);
+        ImGui::SliderFloat("Viscosity", &viscosity, 0.5f, 100.0f);
+        ImGui::SliderFloat("Damping", &damping, 0.5f, 100.0f);
+        ImGui::End();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(getWindow());
         glfwPollEvents();
     }
@@ -199,8 +216,8 @@ private:
 
     float aspect_ratio = (float)SCR_WIDTH / SCR_HEIGHT;
 
-    std::string shader_dir = "../res/shaders/";
-    std::string obj_dir = "../res/objects/";
+    std::string shader_dir = "./Fluids/pointspheres/res/shaders/";
+    std::string obj_dir = "./Fluids/pointspheres/res/objects/";
 
     std::shared_ptr<Shader> point_shader = nullptr;
 
@@ -220,7 +237,10 @@ private:
 
     std::string title 
         = std::to_string(SCR_WIDTH) + "x" + std::to_string(SCR_HEIGHT) + "@" + std::to_string(fps);
-
+    float density = 5;
+    float pressureForce = 5;
+    float viscosity = 5;
+    float damping = 5;
 };
 
 int main()
@@ -228,6 +248,12 @@ int main()
     std::shared_ptr<Application> app = std::make_shared<Application>();
     
     app->init();
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(app->getWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 
     while (!glfwWindowShouldClose(app->getWindow()))
     {
