@@ -53,7 +53,7 @@ public:
     void update(float delta_time);
 
     void render(std::shared_ptr<Shader> shader, float delta_time);
-
+    void prerender(std::shared_ptr<Shader> shader, float delta_time);
 private:
     unsigned int VAO = 0,
                  VBO = 0,

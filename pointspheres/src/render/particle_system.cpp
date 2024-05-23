@@ -385,3 +385,13 @@ void ParticleSystem::render(std::shared_ptr<Shader> shader, float delta_time)
     glBindVertexArray(VAO);
     glDrawArraysInstanced(GL_TRIANGLES, 0, 6, num_of_points);
 }
+void ParticleSystem::prerender(std::shared_ptr<Shader> shader, float delta_time)
+{
+    shader->use();
+
+    updateBuffer();
+    // printPositions();
+
+    glBindVertexArray(VAO);
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, num_of_points);
+}

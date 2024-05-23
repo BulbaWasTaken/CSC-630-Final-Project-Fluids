@@ -19,6 +19,38 @@
 class Application : public EventCallbacks
 {
 public:
+    GLuint framebuffer;
+    GLuint depthTexture;
+
+    void setupFramebuffer() {
+        // Generate and bind the framebuffer
+        glGenFramebuffers(1, &framebuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+        // Create the depth texture
+        glGenTextures(1, &depthTexture);
+        glBindTexture(GL_TEXTURE_2D, depthTexture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, SCR_WIDTH, SCR_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        // Attach the depth texture to the framebuffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
+
+        // We don't need a color buffer
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+
+        // Check if framebuffer is complete
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+            std::cerr << "Framebuffer is not complete!" << std::endl;
+        }
+
+        // Unbind the framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
     void frameBuffer_size_callback(GLFWwindow* window, int width, int height)
     {
         glViewport(0, 0, width, height);
@@ -137,6 +169,7 @@ public:
         camera = std::make_shared<fps_Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 
         initGeom();
+        setupFramebuffer();
     }
 
     void shutdown()
@@ -168,7 +201,10 @@ public:
 
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        // Render to the framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+        glClear(GL_DEPTH_BUFFER_BIT);
         point_shader->use();
 
         auto projection = std::make_shared<MatrixStack>();
@@ -183,6 +219,21 @@ public:
 
         point_shader->setVec3("viewPos", camera->getPosition());
         point_shader->setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+        point_shader->setInt("depthSampler", 0);
+        point_shader->setInt("width", SCR_WIDTH);
+        point_shader->setInt("height", SCR_HEIGHT);
+
+        particle_system->prerender(point_shader, delta_time);
+
+
+        // Bind the default framebuffer (screen) and render the depth texture
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        // Bind the depth texture to a texture unit (e.g., unit 0)
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthTexture);
 
         particle_system->render(point_shader, delta_time);
 
