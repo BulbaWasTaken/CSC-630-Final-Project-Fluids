@@ -9,6 +9,7 @@ in vec3 sphere_center;
 uniform vec3 viewPos;
 uniform float point_radius;
 uniform mat4 proj;
+uniform mat4 view;
 uniform vec3 aColor;
 uniform int width;
 uniform int height;
